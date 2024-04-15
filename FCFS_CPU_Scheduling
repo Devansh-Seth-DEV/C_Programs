@@ -1,0 +1,354 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct prcs_t
+{
+	int pid;
+	int arrival_tm;
+	int burst_tm;
+	int comp_tm;
+	int turnAround_tm;
+	int wait_tm;
+} PRCS_T;
+
+
+typedef struct prcs_queue_t
+{
+	PRCS_T** queue;
+	size_t que_size;
+	int front;
+	int rear;
+} PRCS_QUE;
+
+
+int PRCS_INIT(PRCS_T* **PP_PROC, size_t nmemb);
+PRCS_T* PRCS_CREAT(int pid, int arrival_tm, int burst_tm);
+void PRCS_SORT(PRCS_T* *PP_PROC, size_t nmemb);
+void PRCS_RUN(PRCS_QUE* PQUE);
+double PRCS_AVG_TURNA_TM(PRCS_T* *PP_PROC, size_t nmemb);
+double PRCS_AVG_WAIT_TM(PRCS_T* *PP_PROC, size_t nmemb);
+void PRCS_REL(PRCS_T* *PP_PROC, size_t nmemb);
+
+
+int PRCS_QUE_INIT(PRCS_QUE* *PPQUE, size_t nmemb);
+int PRCS_QUE_ENQUEUE(PRCS_QUE* PQUE, PRCS_T* PPROC);
+int PRCS_QUE_NMEM_ENQ(PRCS_QUE* PQUE, PRCS_T* *PP_PROC, size_t nmemb);
+PRCS_T* PRCS_QUE_DEQUEUE(PRCS_QUE* PQUE);
+int PRCS_QUE_EMPTY(PRCS_QUE* PQUE);
+void PRCS_QUE_REL(PRCS_QUE* *PPQUE);
+
+
+int main() {
+	size_t nprcsMemb;
+	int arrival_tm;
+	int burst_tm;
+	PRCS_T* *PP_PRCS;
+	PRCS_QUE* RDY_QUEUE;
+
+	printf("FCFS Scheduling...\n");
+
+	printf("Enter no. of process: ");
+	scanf("%zu", &nprcsMemb);
+
+	if (PRCS_INIT(&PP_PRCS, nprcsMemb)) {
+		perror("Can't initialize runnable process\n");
+		return 1;
+	}
+	
+	if (PRCS_QUE_INIT(&RDY_QUEUE, nprcsMemb)) {
+		perror("Can't initialize ready queue\n");
+		return 2;
+	}
+
+	for (size_t i=0; i<nprcsMemb; i++) {
+		printf("Process: %zu\n", i+1);
+		printf("\tEnter arrival time: ");
+		scanf("%d", &arrival_tm);
+		printf("\tEnter burst time: ");
+		scanf("%d", &burst_tm);
+		
+
+		PRCS_T* PPROC = PRCS_CREAT(i+1, arrival_tm, burst_tm);
+		if (PPROC == NULL) {
+			perror("Can't create process\n");
+			return 3;
+		}
+
+		PP_PRCS[i] = PPROC;
+
+		printf("\n");
+	}
+
+	int exitStat = PRCS_QUE_NMEM_ENQ(RDY_QUEUE, PP_PRCS, nprcsMemb);
+	switch (exitStat) {
+		case -1:
+			perror("Ready queue is not initialized\n");
+			break;
+		case -2:
+			perror("Ready queue is not created\n");
+			break;
+		case -3:
+			perror("Null process error\n");
+			break;
+		case 0:
+			break;
+		default:
+			printf("QUEUE OVERFLOW\n");
+
+	}
+
+	PRCS_RUN(RDY_QUEUE);
+
+	printf("\n");
+	printf("Avg Turn Around Time: %.2lf\n", PRCS_AVG_TURNA_TM(PP_PRCS, nprcsMemb));
+	printf("Avg Waiting Time: %.2lf\n\n", PRCS_AVG_WAIT_TM(PP_PRCS, nprcsMemb));
+
+	PRCS_QUE_REL(&RDY_QUEUE);
+	PRCS_REL(PP_PRCS, nprcsMemb);
+	
+	return 0;
+}
+
+
+int PRCS_INIT(PRCS_T* **PP_PROC, size_t nmemb) {
+	*PP_PROC = (PRCS_T**) calloc(nmemb, sizeof(PRCS_T*));
+	if (PP_PROC == NULL) {
+		return 1;
+	}
+
+	return 0;
+}
+
+
+PRCS_T* PRCS_CREAT(int pid, int arrival_tm, int burst_tm) {
+	PRCS_T* PPRCS =  (PRCS_T*) malloc(sizeof(PRCS_T));
+	PPRCS->pid = pid;
+	PPRCS->arrival_tm = arrival_tm;
+	PPRCS->burst_tm = burst_tm;
+
+	return PPRCS;
+}
+
+
+void PRCS_REL(PRCS_T* *PP_PROC, size_t nmemb) {
+	if(PP_PROC == NULL || nmemb <=0) {
+		return;
+	}
+
+	for (size_t i=0; i<nmemb; i++) {
+		if (PP_PROC[i] == NULL) {
+			continue;
+		}
+
+		free(PP_PROC[i]);
+		PP_PROC[i] = NULL;
+	}
+
+	free(PP_PROC);
+	PP_PROC = NULL;
+}
+
+
+void PRCS_SORT(PRCS_T* *PP_PROC, size_t nmemb) {
+	PRCS_T* key;
+	ssize_t j;
+
+	for (size_t i=1; i<nmemb; i++) {
+		key = PP_PROC[i];
+		j = i-1;
+		
+		while (j>=0 && PP_PROC[j]->arrival_tm > key->arrival_tm) {
+			PP_PROC[j+1] = PP_PROC[j];
+			j--;
+		}
+
+		PP_PROC[j+1] = key; 
+	}
+}
+
+
+void PRCS_RUN(PRCS_QUE* PQUE) {
+	int comp_tm = 0;
+
+	printf("Running Processes..\n\n");
+
+	while (!PRCS_QUE_EMPTY(PQUE)) {
+		PRCS_T* PPROC = PRCS_QUE_DEQUEUE(PQUE);
+
+		if (comp_tm == 0) {
+			comp_tm = PPROC->burst_tm + PPROC->arrival_tm;	
+		} else {
+			// check if CPU is in IDLE stage
+			if (PPROC->arrival_tm > comp_tm) {
+				// if CPU gets IDLE then compute new process completion time with increment of IDLE time taken by CPU
+				comp_tm += PPROC->arrival_tm - comp_tm;
+			}
+
+			comp_tm += PPROC->burst_tm;
+		}
+
+		PPROC->comp_tm = comp_tm;
+		PPROC->turnAround_tm = PPROC->comp_tm - PPROC->arrival_tm;
+		PPROC->wait_tm = PPROC->turnAround_tm - PPROC->burst_tm;
+
+		printf(
+				"P.No: %d | A.T: %d | B.T: %d | C.T: %d | T.A.T: %d | W.T: %d\n",
+				PPROC->pid,
+				PPROC->arrival_tm,
+				PPROC->burst_tm,
+				PPROC->comp_tm,
+				PPROC->turnAround_tm,
+				PPROC->wait_tm
+			 );
+	}
+}
+
+
+double PRCS_AVG_TURNA_TM(PRCS_T* *PP_PROC, size_t nmemb) {
+	if (PP_PROC == NULL || nmemb <= 0) {
+		return 0;
+	}
+
+	double turnAround_tm = 0;
+
+	for (size_t i=0; i<nmemb; i++) {
+		turnAround_tm += PP_PROC[i]->turnAround_tm;
+	}
+
+	return (turnAround_tm/(double) nmemb);
+}
+
+
+double PRCS_AVG_WAIT_TM(PRCS_T* *PP_PROC, size_t nmemb) {
+	if (PP_PROC == NULL || nmemb <= 0) {
+		return 0;
+	}
+
+	double wait_tm = 0;
+
+	for (size_t i=0; i<nmemb; i++) {
+		wait_tm += PP_PROC[i]->wait_tm;
+	}
+
+	return (wait_tm/(double) nmemb);
+}
+
+
+int PRCS_QUE_INIT(PRCS_QUE* *PPQUE, size_t nmemb) {
+	(*PPQUE) = (PRCS_QUE*) malloc(sizeof(PRCS_QUE));
+	if (*PPQUE == NULL) {
+		return -1;
+	}
+
+	(*PPQUE)->queue = (PRCS_T**) calloc(nmemb, sizeof(PRCS_T*));
+	if ((*PPQUE)->queue == NULL) {
+		return -2;
+	}
+
+	(*PPQUE)->que_size = nmemb;
+	(*PPQUE)->front = -1;
+	(*PPQUE)->rear = -1;
+
+	return 0;
+}
+
+
+int PRCS_QUE_ENQUEUE(PRCS_QUE* PQUE, PRCS_T* PPROC) {
+	if (PQUE == NULL) {
+		return -1;
+	}
+
+	if (PQUE->queue == NULL) {
+		return -2;
+	}
+
+	if (PQUE->front == -1 && PQUE->rear == -1) {
+		PQUE->front++;
+	}
+
+	PQUE->rear++;
+	if (PQUE->rear >= PQUE->que_size) {
+		return PQUE->rear;
+	}
+
+	PQUE->queue[PQUE->rear] = PPROC;
+
+	return 0;
+}
+
+
+int PRCS_QUE_NMEM_ENQ(PRCS_QUE* PQUE, PRCS_T* *PP_PROC, size_t nmemb) {
+	if (PQUE == NULL) {
+		return -1;
+	} else if (PQUE->queue == NULL) {
+		return -2;
+	} else if (*PP_PROC == NULL || nmemb <= 0) {
+		return -3;
+	}
+
+	PRCS_SORT(PP_PROC, nmemb);
+
+	for (size_t i=0; i<nmemb; i++) {
+		int exitStat = PRCS_QUE_ENQUEUE(PQUE, PP_PROC[i]);
+		if (exitStat != 0) {
+			perror("Can't enqueue process\n");
+			return exitStat;
+		}
+	}
+
+	return 0;
+}
+
+
+PRCS_T* PRCS_QUE_DEQUEUE(PRCS_QUE* PQUE) {
+	if (PQUE == NULL || PQUE->queue == NULL) {
+		return NULL;
+	}
+
+	if (PQUE->front == PQUE->rear) {
+		PRCS_T* PPROC = PQUE->queue[PQUE->front];
+		PQUE->queue[PQUE->front] = NULL;
+		PQUE->front = -1;
+		PQUE->rear = -1;
+
+		return PPROC;
+	} else if (PQUE->front > PQUE->rear) {
+		PQUE->front = -1;
+		PQUE->rear = -1;
+
+		return NULL;
+	}
+	
+	PRCS_T* PPROC = PQUE->queue[PQUE->front];
+	PQUE->queue[PQUE->front++] = NULL;
+
+	return PPROC;
+}
+
+
+int PRCS_QUE_EMPTY(PRCS_QUE* PQUE) {
+	if (PQUE == NULL) {
+		return -1;
+	} else if (PQUE->queue == NULL) {
+		return -2;
+	}
+
+	if (PQUE->front == -1 && PQUE->rear == -1) {
+		return 1;
+	}
+	
+	return 0;
+}
+
+
+void  PRCS_QUE_REL(PRCS_QUE* *PPQUE) {
+	if ((*PPQUE)->queue) {
+		free((*PPQUE)->queue);
+		(*PPQUE)->queue = NULL;
+	}
+
+	if (*PPQUE) {
+		free(*PPQUE);
+		*PPQUE = NULL;
+	}
+}
