@@ -141,7 +141,7 @@ void PRCS_REL(PRCS_T* **PP_PROC, size_t nmemb) {
 		}
 
 		free((*PP_PROC)[i]);
-		(*PP_PROC[i]) = NULL;
+		(*PP_PROC)[i] = NULL;
 	}
 
 	free(*PP_PROC);
