@@ -27,7 +27,7 @@ void PRCS_SORT(PRCS_T* *PP_PROC, size_t nmemb);
 void PRCS_RUN(PRCS_QUE* PQUE);
 double PRCS_AVG_TURNA_TM(PRCS_T* *PP_PROC, size_t nmemb);
 double PRCS_AVG_WAIT_TM(PRCS_T* *PP_PROC, size_t nmemb);
-void PRCS_REL(PRCS_T* *PP_PROC, size_t nmemb);
+void PRCS_REL(PRCS_T* **PP_PROC, size_t nmemb);
 
 
 int PRCS_QUE_INIT(PRCS_QUE* *PPQUE, size_t nmemb);
@@ -104,7 +104,7 @@ int main() {
 	printf("Avg Waiting Time: %.2lf\n\n", PRCS_AVG_WAIT_TM(PP_PRCS, nprcsMemb));
 
 	PRCS_QUE_REL(&RDY_QUEUE);
-	PRCS_REL(PP_PRCS, nprcsMemb);
+	PRCS_REL(&PP_PRCS, nprcsMemb);
 	
 	return 0;
 }
@@ -130,22 +130,22 @@ PRCS_T* PRCS_CREAT(int pid, int arrival_tm, int burst_tm) {
 }
 
 
-void PRCS_REL(PRCS_T* *PP_PROC, size_t nmemb) {
-	if(PP_PROC == NULL || nmemb <=0) {
+void PRCS_REL(PRCS_T* **PP_PROC, size_t nmemb) {
+	if(*PP_PROC == NULL || nmemb <=0) {
 		return;
 	}
 
 	for (size_t i=0; i<nmemb; i++) {
-		if (PP_PROC[i] == NULL) {
+		if ((*PP_PROC)[i] == NULL) {
 			continue;
 		}
 
-		free(PP_PROC[i]);
-		PP_PROC[i] = NULL;
+		free((*PP_PROC)[i]);
+		(*PP_PROC[i]) = NULL;
 	}
 
-	free(PP_PROC);
-	PP_PROC = NULL;
+	free(*PP_PROC);
+	*PP_PROC = NULL;
 }
 
 
