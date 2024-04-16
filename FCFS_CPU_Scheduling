@@ -27,7 +27,7 @@ void PRCS_SORT(PRCS_T* *PP_PROC, size_t nmemb);
 void PRCS_RUN(PRCS_QUE* PQUE);
 double PRCS_AVG_TURNA_TM(PRCS_T* *PP_PROC, size_t nmemb);
 double PRCS_AVG_WAIT_TM(PRCS_T* *PP_PROC, size_t nmemb);
-void PRCS_REL(PRCS_T* **PP_PROC, size_t nmemb);
+void PRCS_RELEASE(PRCS_T* **PP_PROC, size_t nmemb);
 
 
 int PRCS_QUE_INIT(PRCS_QUE* *PPQUE, size_t nmemb);
@@ -35,7 +35,7 @@ int PRCS_QUE_ENQUEUE(PRCS_QUE* PQUE, PRCS_T* PPROC);
 int PRCS_QUE_NMEM_ENQ(PRCS_QUE* PQUE, PRCS_T* *PP_PROC, size_t nmemb);
 PRCS_T* PRCS_QUE_DEQUEUE(PRCS_QUE* PQUE);
 int PRCS_QUE_EMPTY(PRCS_QUE* PQUE);
-void PRCS_QUE_REL(PRCS_QUE* *PPQUE);
+void PRCS_QUE_RELEASE(PRCS_QUE* *PPQUE);
 
 
 int main() {
@@ -51,12 +51,12 @@ int main() {
 	scanf("%zu", &nprcsMemb);
 
 	if (PRCS_INIT(&PP_PRCS, nprcsMemb)) {
-		perror("Can't initialize runnable process\n");
+		perror("Can't initialize process batch\n");
 		return 1;
 	}
 	
 	if (PRCS_QUE_INIT(&RDY_QUEUE, nprcsMemb)) {
-		perror("Can't initialize ready queue\n");
+		perror("Can't initialize READY-QUEUE\n");
 		return 2;
 	}
 
@@ -82,29 +82,33 @@ int main() {
 	int exitStat = PRCS_QUE_NMEM_ENQ(RDY_QUEUE, PP_PRCS, nprcsMemb);
 	switch (exitStat) {
 		case -1:
-			perror("Ready queue is not initialized\n");
+			perror("READY-QUEUE is not initialized\n");
 			break;
 		case -2:
-			perror("Ready queue is not created\n");
+			perror("READY-QUEUE is not created\n");
 			break;
 		case -3:
-			perror("Null process error\n");
+			perror("Hit NULL process in READY-QUEUE\n");
 			break;
 		case 0:
 			break;
 		default:
-			printf("QUEUE OVERFLOW\n");
+			perror("READY-QUEUE OVERFLOW\n");
 
 	}
+
+	printf("Running Processes..\n\n");
 
 	PRCS_RUN(RDY_QUEUE);
 
 	printf("\n");
+
 	printf("Avg Turn Around Time: %.2lf\n", PRCS_AVG_TURNA_TM(PP_PRCS, nprcsMemb));
+
 	printf("Avg Waiting Time: %.2lf\n\n", PRCS_AVG_WAIT_TM(PP_PRCS, nprcsMemb));
 
-	PRCS_QUE_REL(&RDY_QUEUE);
-	PRCS_REL(&PP_PRCS, nprcsMemb);
+	PRCS_QUE_RELEASE(&RDY_QUEUE);
+	PRCS_RELEASE(&PP_PRCS, nprcsMemb);
 	
 	return 0;
 }
@@ -130,7 +134,7 @@ PRCS_T* PRCS_CREAT(int pid, int arrival_tm, int burst_tm) {
 }
 
 
-void PRCS_REL(PRCS_T* **PP_PROC, size_t nmemb) {
+void PRCS_RELEASE(PRCS_T* **PP_PROC, size_t nmemb) {
 	if(*PP_PROC == NULL || nmemb <=0) {
 		return;
 	}
@@ -169,8 +173,6 @@ void PRCS_SORT(PRCS_T* *PP_PROC, size_t nmemb) {
 
 void PRCS_RUN(PRCS_QUE* PQUE) {
 	int comp_tm = 0;
-
-	printf("Running Processes..\n\n");
 
 	while (!PRCS_QUE_EMPTY(PQUE)) {
 		PRCS_T* PPROC = PRCS_QUE_DEQUEUE(PQUE);
@@ -341,7 +343,7 @@ int PRCS_QUE_EMPTY(PRCS_QUE* PQUE) {
 }
 
 
-void  PRCS_QUE_REL(PRCS_QUE* *PPQUE) {
+void  PRCS_QUE_RELEASE(PRCS_QUE* *PPQUE) {
 	if ((*PPQUE)->queue) {
 		free((*PPQUE)->queue);
 		(*PPQUE)->queue = NULL;
