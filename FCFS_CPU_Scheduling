@@ -1,11 +1,3 @@
-/*
- * TODO:
- * 	Upgrade the logic
- * 	Remove the extra memory for READY QUEUE, add front and rear pointer to Process Array and teart it as a QUEUE
- * 	Sort the Process Array after insertion or apply insertion sort while inserting the processes at runtime
- *	After sorting treat the array as READY QUEUE
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,28 +11,31 @@ typedef struct prcs_t
 	int wait_tm;
 } PRCS_T;
 
+typedef struct prcs_result
+{
+	int tot_comp_tm;
+	int tot_turna_tm;
+	int tot_wait_tm;
+	double avg_comp_tm;
+	double avg_turna_tm;
+	double avg_wait_tm;
+} PRESULT;
+
 
 typedef struct prcs_queue_t
 {
 	PRCS_T** queue;
 	size_t que_size;
-	int front;
-	int rear;
+	ssize_t front;
+	ssize_t rear;
 } PRCS_QUE;
 
 
-int PRCS_INIT(PRCS_T* **tpPROC, size_t nmemb);
 PRCS_T* PRCS_CREAT(int pid, int arrival_tm, int burst_tm);
-void PRCS_SORT(PRCS_T* *dpPROC, size_t nmemb);
-void PRCS_RUN(PRCS_QUE* pQUE);
-double PRCS_AVG_TURNA_TM(PRCS_T* *dpPROC, size_t nmemb);
-double PRCS_AVG_WAIT_TM(PRCS_T* *dpPROC, size_t nmemb);
-void PRCS_RELEASE(PRCS_T* *dpPROC, size_t nmemb);
-
+void PRCS_RUN(PRCS_QUE* pQUE, PRESULT* res);
 
 int PRCS_QUE_INIT(PRCS_QUE* *dpQUE, size_t nmemb);
 int PRCS_QUE_ENQUEUE(PRCS_QUE* pQUE, PRCS_T* pPROC);
-int PRCS_QUE_NMEM_ENQ(PRCS_QUE* pQUE, PRCS_T* *dpPROC, size_t nmemb);
 PRCS_T* PRCS_QUE_DEQUEUE(PRCS_QUE* pQUE);
 int PRCS_QUE_EMPTY(PRCS_QUE* pQUE);
 void PRCS_QUE_RELEASE(PRCS_QUE* *dpQUE);
@@ -50,22 +45,17 @@ int main() {
 	size_t nprcsMemb;
 	int arrival_tm;
 	int burst_tm;
-	PRCS_T* *dpPRCS;
 	PRCS_QUE* RDY_QUEUE;
-
-	printf("FCFS Scheduling...\n");
+	PRESULT prcs_tm;
 
 	printf("Enter no. of process: ");
 	scanf("%zu", &nprcsMemb);
 
-	if (PRCS_INIT(&dpPRCS, nprcsMemb)) {
-		perror("Can't initialize process batch\n");
-		return 1;
-	}
-	
 	if (PRCS_QUE_INIT(&RDY_QUEUE, nprcsMemb)) {
-		perror("Can't initialize READY-QUEUE\n");
-		return 2;
+		perror("ERROR [READY-QUEUE]");
+		return 1;
+	} else {
+		printf("READY-QUEUE initialized\n");
 	}
 
 	for (size_t i=0; i<nprcsMemb; i++) {
@@ -78,68 +68,38 @@ int main() {
 
 		PRCS_T* pPROC = PRCS_CREAT(i+1, arrival_tm, burst_tm);
 		if (pPROC == NULL) {
-			perror("Can't create process\n");
-			return 3;
+			perror("ERROR [NEW PROCESS]");
+			return 2;
 		}
 
-		/*
-		 * TODO:
-		 * insert the process into the array using insertion sort technique, this'll insert the process as well as in a sorted manner
-		 * instead of first inserting all the processes and then sorting the whole array
-		 */
-
-		dpPRCS[i] = pPROC;
+		switch(PRCS_QUE_ENQUEUE(RDY_QUEUE, pPROC))
+		{
+			case -1:
+				perror("ERROR [READY-QUEUE]");
+				break;
+			case -2:
+				perror("ERROR [PROCESS QUEUE]");
+				break;
+			case 0:
+				break;
+			default:
+				perror("ERROR [PROCESS QUEUE OVERFLOW]");
+				break;
+		}
 
 		printf("\n");
 	}
 
-	/*
-	 * TODO:
-	 * don't make new QUEUE
-	 * use the PROCESS ARRAY as a queue by adding a rear and front pointer to it
-	 * Add and delete the element according to the QUEUE logic
-	 */
-
-	int exitStat = PRCS_QUE_NMEM_ENQ(RDY_QUEUE, dpPRCS, nprcsMemb);
-	switch (exitStat) {
-		case -1:
-			perror("READY-QUEUE is not initialized\n");
-			break;
-		case -2:
-			perror("READY-QUEUE is not created\n");
-			break;
-		case -3:
-			perror("Hit NULL process in READY-QUEUE\n");
-			break;
-		case 0:
-			break;
-		default:
-			printf("READY-QUEUE OVERFLOW\n");
-
-	}
-
 	printf("Running Processes...\n\n");
 
-	PRCS_RUN(RDY_QUEUE);
+	PRCS_RUN(RDY_QUEUE, &prcs_tm);
 
 	printf("\n");
 
-	printf("Avg Turn Around Time: %.2lf\n", PRCS_AVG_TURNA_TM(dpPRCS, nprcsMemb));
-
-	printf("Avg Waiting Time: %.2lf\n\n", PRCS_AVG_WAIT_TM(dpPRCS, nprcsMemb));
+	printf("Avg Turn Around Time: %.2lf\n", prcs_tm.avg_turna_tm);
+	printf("Avg Waiting Time: %.2lf\n", prcs_tm.avg_wait_tm);
 
 	PRCS_QUE_RELEASE(&RDY_QUEUE);
-	PRCS_RELEASE(dpPRCS, nprcsMemb);
-	
-	return 0;
-}
-
-
-int PRCS_INIT(PRCS_T* **tpPROC, size_t nmemb) {
-	*tpPROC = (PRCS_T**) calloc(nmemb, sizeof(PRCS_T*));
-	if (tpPROC == NULL) {
-		return 1;
-	}
 
 	return 0;
 }
@@ -155,48 +115,27 @@ PRCS_T* PRCS_CREAT(int pid, int arrival_tm, int burst_tm) {
 }
 
 
-void PRCS_RELEASE(PRCS_T* *dpPROC, size_t nmemb) {
-	if(dpPROC == NULL || nmemb <=0) {
+void PRCS_RUN(PRCS_QUE* pQUE, PRESULT* res) {
+	if (pQUE == NULL) {
 		return;
 	}
 
-	for (size_t i=0; i<nmemb; i++) {
-		if (dpPROC[i] == NULL) {
-			continue;
-		}
+	PRCS_T* pPROC;
 
-		free(dpPROC[i]);
-		dpPROC[i] = NULL;
-	}
-
-	free(dpPROC);
-	dpPROC = NULL;
-}
-
-
-void PRCS_SORT(PRCS_T* *dpPROC, size_t nmemb) {
-	PRCS_T* key;
-	ssize_t j;
-
-	for (size_t i=1; i<nmemb; i++) {
-		key = dpPROC[i];
-		j = i-1;
-		
-		while (j>=0 && dpPROC[j]->arrival_tm > key->arrival_tm) {
-			dpPROC[j+1] = dpPROC[j];
-			j--;
-		}
-
-		dpPROC[j+1] = key; 
-	}
-}
-
-
-void PRCS_RUN(PRCS_QUE* pQUE) {
 	int comp_tm = 0;
+	if (res) {
+		res->tot_comp_tm = 0;
+		res->tot_turna_tm = 0;
+		res->tot_wait_tm = 0;
+		res->avg_comp_tm = 0;
+		res->avg_turna_tm = 0;
+		res->avg_wait_tm = 0;
+	}
+
+	printf("P.NO\t\tA.T\t\tB.T\t\tC.T\t\tT.A.T\t\tW.T\n\n");
 
 	while (!PRCS_QUE_EMPTY(pQUE)) {
-		PRCS_T* pPROC = PRCS_QUE_DEQUEUE(pQUE);
+		pPROC = PRCS_QUE_DEQUEUE(pQUE);
 
 		if (comp_tm == 0) {
 			comp_tm = pPROC->burst_tm + pPROC->arrival_tm;	
@@ -214,8 +153,9 @@ void PRCS_RUN(PRCS_QUE* pQUE) {
 		pPROC->turnAround_tm = pPROC->comp_tm - pPROC->arrival_tm;
 		pPROC->wait_tm = pPROC->turnAround_tm - pPROC->burst_tm;
 
+
 		printf(
-				"P.No: %d | A.T: %d | B.T: %d | C.T: %d | T.A.T: %d | W.T: %d\n",
+				"%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", // P.NO, A.T, B.T, C.T, T.A.T, W.T
 				pPROC->pid,
 				pPROC->arrival_tm,
 				pPROC->burst_tm,
@@ -223,37 +163,22 @@ void PRCS_RUN(PRCS_QUE* pQUE) {
 				pPROC->turnAround_tm,
 				pPROC->wait_tm
 			 );
-	}
-}
 
+		if (res) {
+			res->tot_comp_tm += pPROC->comp_tm;
+			res->tot_turna_tm += pPROC->turnAround_tm;
+			res->tot_wait_tm += pPROC->wait_tm;
+		}
 
-double PRCS_AVG_TURNA_TM(PRCS_T* *dpPROC, size_t nmemb) {
-	if (dpPROC == NULL || nmemb <= 0) {
-		return 0;
-	}
-
-	double turnAround_tm = 0;
-
-	for (size_t i=0; i<nmemb; i++) {
-		turnAround_tm += dpPROC[i]->turnAround_tm;
+		free(pPROC);
+		pPROC = NULL;
 	}
 
-	return (turnAround_tm/(double) nmemb);
-}
-
-
-double PRCS_AVG_WAIT_TM(PRCS_T* *dpPROC, size_t nmemb) {
-	if (dpPROC == NULL || nmemb <= 0) {
-		return 0;
+	if (res) {
+		res->avg_comp_tm = (double) res->tot_comp_tm/pQUE->que_size;
+		res->avg_turna_tm = (double) res->tot_turna_tm/pQUE->que_size;
+		res->avg_wait_tm = (double) res->tot_wait_tm/pQUE->que_size;
 	}
-
-	double wait_tm = 0;
-
-	for (size_t i=0; i<nmemb; i++) {
-		wait_tm += dpPROC[i]->wait_tm;
-	}
-
-	return (wait_tm/(double) nmemb);
 }
 
 
@@ -290,33 +215,21 @@ int PRCS_QUE_ENQUEUE(PRCS_QUE* pQUE, PRCS_T* pPROC) {
 	}
 
 	pQUE->rear++;
-	if (pQUE->rear >= pQUE->que_size) {
+	if (pQUE->rear >= (ssize_t) pQUE->que_size) {
 		return pQUE->rear;
 	}
 
-	pQUE->queue[pQUE->rear] = pPROC;
 
-	return 0;
-}
-
-
-int PRCS_QUE_NMEM_ENQ(PRCS_QUE* pQUE, PRCS_T* *dpPROC, size_t nmemb) {
-	if (pQUE == NULL) {
-		return -1;
-	} else if (pQUE->queue == NULL) {
-		return -2;
-	} else if (*dpPROC == NULL || nmemb <= 0) {
-		return -3;
-	}
-
-	PRCS_SORT(dpPROC, nmemb);
-
-	for (size_t i=0; i<nmemb; i++) {
-		int exitStat = PRCS_QUE_ENQUEUE(pQUE, dpPROC[i]);
-		if (exitStat != 0) {
-			perror("Can't enqueue process\n");
-			return exitStat;
+	if (pQUE->rear == 9) {
+		pQUE->queue[0] = pPROC;
+	} else {
+		ssize_t j = pQUE->rear-1;
+		while (j>=0 && pQUE->queue[j]->arrival_tm > pPROC->arrival_tm) {
+			pQUE->queue[j+1] = pQUE->queue[j];
+			j--;
 		}
+
+		pQUE->queue[j+1] = pPROC; 
 	}
 
 	return 0;
