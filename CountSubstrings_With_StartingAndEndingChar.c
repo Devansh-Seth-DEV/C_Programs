@@ -36,25 +36,11 @@ char *ReadBuffer(const size_t buffsize) {
 }
 
 size_t CountSubStart2End(const char *src, const char strt, const char end) {
-	size_t count = 0;
-	size_t SC = 0;
-	ssize_t TOS = -1;
-	size_t n = strlen(src);
-	char STACK[n+1];
+	size_t count = 0, strtcnt = 0;
 
-	memset(STACK, '\0', n);
-
-	for (size_t i=0; i<n; i++) {
-		if (strt == src[i]) { STACK[++TOS] = strt; ++SC; }
-		else if (end == src[i] && -1 != TOS) STACK[++TOS] = end;
-	}
-
-	while (strt == STACK[TOS]) { TOS--; SC--; }
-	
-	while (0 != TOS) {
-		if (end == STACK[TOS]) count += SC;
-		else SC--;
-		TOS--;
+	for (size_t i=0; i<strlen(src); i++) {
+		if (strt == src[i]) SC++;
+		else if(end == src[i]) count += SC;
 	}
 
 	return count;
