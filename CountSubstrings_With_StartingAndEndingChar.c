@@ -39,8 +39,8 @@ size_t CountSubStart2End(const char *src, const char strt, const char end) {
 	size_t count = 0, strtcnt = 0;
 
 	for (size_t i=0; i<strlen(src); i++) {
-		if (strt == src[i]) SC++;
-		else if(end == src[i]) count += SC;
+		if (strt == src[i]) strtcnt++;
+		else if(end == src[i]) count += strtcnt;
 	}
 
 	return count;
