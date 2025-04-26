@@ -1,40 +1,5 @@
 #include "../headers/lexer.h"
 
-/*
-typedef enum tokcat_e{
-    PRE_PROC,
-    SYMBOLS,
-    LITERAL,
-    NFKI_LITERAL
-} tokcat_e;
-
-
-typedef enum tok_e{
-    KEYWORD,
-    OPERATOR,
-    PUNCTUATION,
-    NUMERIC_LITERAL,
-    FLOATING_POINT_LITERAL,
-    CHARACTER_LITERAL,
-    STRING_LITERAL,
-    INVALID_IDENTIFIER,
-    IDENTIFIER,
-    PRE_PROCESSOR_OPERATOR
-} tok_e;
-
-typedef struct tok_t{
-    char *val;
-    tok_e typ;
-    size_t ln;
-    size_t col; 
-} tok_t;
-
-typedef struct tokset_t {
-    tok_t **toks;
-    size_t toksz;
-} tokset_t;
-*/
-
 const char *toktyp_rval(const tok_e type) {
     switch (type) {
         case KEYWORD: return "Keyword"; break;
