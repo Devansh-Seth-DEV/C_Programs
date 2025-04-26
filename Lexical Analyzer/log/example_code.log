@@ -1,0 +1,1332 @@
+Total tokens: 264
+Total preprocessor operators: 6
+Total identifiers: 62
+Total invalid-identifiers: 1
+Total keywords: 28
+Total operators: 39
+Total punctuations: 102
+Total numeric literals: 12
+Total floating-point literals: 3
+Total character literals: 4
+Total string literals: 7
+
+Token: #include
+Type: Preprocessor Operator
+Line: 1
+Column: 1
+
+Token: <
+Type: Operator
+Line: 1
+Column: 10
+
+Token: stdio.h
+Type: Identifier
+Line: 1
+Column: 11
+
+Token: >
+Type: Operator
+Line: 1
+Column: 18
+
+Token: #include
+Type: Preprocessor Operator
+Line: 2
+Column: 2
+
+Token: <
+Type: Operator
+Line: 2
+Column: 11
+
+Token: math.h
+Type: Identifier
+Line: 2
+Column: 12
+
+Token: >
+Type: Operator
+Line: 2
+Column: 18
+
+Token: #define
+Type: Preprocessor Operator
+Line: 3
+Column: 2
+
+Token: PI
+Type: Identifier
+Line: 3
+Column: 10
+
+Token: 3.1415
+Type: Floating-Point Literal
+Line: 3
+Column: 13
+
+Token: #define
+Type: Preprocessor Operator
+Line: 4
+Column: 7
+
+Token: MAX
+Type: Identifier
+Line: 4
+Column: 15
+
+Token: (
+Type: Punctuator
+Line: 4
+Column: 18
+
+Token: a
+Type: Identifier
+Line: 4
+Column: 22
+
+Token: ,
+Type: Punctuator
+Line: 4
+Column: 23
+
+Token: b
+Type: Identifier
+Line: 4
+Column: 25
+
+Token: )
+Type: Punctuator
+Line: 4
+Column: 26
+
+Token: (
+Type: Punctuator
+Line: 4
+Column: 29
+
+Token: (
+Type: Punctuator
+Line: 4
+Column: 32
+
+Token: a
+Type: Identifier
+Line: 4
+Column: 36
+
+Token: )
+Type: Punctuator
+Line: 4
+Column: 37
+
+Token: >
+Type: Operator
+Line: 4
+Column: 40
+
+Token: (
+Type: Punctuator
+Line: 4
+Column: 42
+
+Token: b
+Type: Identifier
+Line: 4
+Column: 44
+
+Token: )
+Type: Punctuator
+Line: 4
+Column: 45
+
+Token: ?
+Type: Punctuator
+Line: 4
+Column: 48
+
+Token: (
+Type: Punctuator
+Line: 4
+Column: 52
+
+Token: a
+Type: Identifier
+Line: 4
+Column: 56
+
+Token: )
+Type: Punctuator
+Line: 4
+Column: 57
+
+Token: :
+Type: Punctuator
+Line: 4
+Column: 60
+
+Token: (
+Type: Punctuator
+Line: 4
+Column: 64
+
+Token: b
+Type: Identifier
+Line: 4
+Column: 68
+
+Token: )
+Type: Punctuator
+Line: 4
+Column: 69
+
+Token: )
+Type: Punctuator
+Line: 4
+Column: 71
+
+Token: typedef
+Type: Keyword
+Line: 6
+Column: 4
+
+Token: struct
+Type: Keyword
+Line: 6
+Column: 12
+
+Token: {
+Type: Punctuator
+Line: 6
+Column: 19
+
+Token: int
+Type: Keyword
+Line: 7
+Column: 12
+
+Token: id
+Type: Identifier
+Line: 7
+Column: 16
+
+Token: ;
+Type: Punctuator
+Line: 7
+Column: 18
+
+Token: char
+Type: Keyword
+Line: 8
+Column: 8
+
+Token: name
+Type: Identifier
+Line: 8
+Column: 13
+
+Token: [
+Type: Punctuator
+Line: 8
+Column: 17
+
+Token: 50
+Type: Numeric Literal
+Line: 8
+Column: 22
+
+Token: ]
+Type: Punctuator
+Line: 8
+Column: 24
+
+Token: ;
+Type: Punctuator
+Line: 8
+Column: 27
+
+Token: }
+Type: Punctuator
+Line: 9
+Column: 5
+
+Token: Student
+Type: Identifier
+Line: 9
+Column: 11
+
+Token: ;
+Type: Punctuator
+Line: 9
+Column: 18
+
+Token: int
+Type: Keyword
+Line: 11
+Column: 9
+
+Token: global_var
+Type: Identifier
+Line: 11
+Column: 13
+
+Token: =
+Type: Operator
+Line: 11
+Column: 24
+
+Token: 100
+Type: Numeric Literal
+Line: 11
+Column: 26
+
+Token: ;
+Type: Punctuator
+Line: 11
+Column: 29
+
+Token: void
+Type: Keyword
+Line: 13
+Column: 5
+
+Token: print_student
+Type: Identifier
+Line: 13
+Column: 10
+
+Token: (
+Type: Punctuator
+Line: 13
+Column: 23
+
+Token: Student
+Type: Identifier
+Line: 13
+Column: 37
+
+Token: *
+Type: Operator
+Line: 13
+Column: 44
+
+Token: s
+Type: Identifier
+Line: 13
+Column: 46
+
+Token: )
+Type: Punctuator
+Line: 13
+Column: 47
+
+Token: {
+Type: Punctuator
+Line: 13
+Column: 50
+
+Token: printf
+Type: Identifier
+Line: 14
+Column: 8
+
+Token: (
+Type: Punctuator
+Line: 14
+Column: 14
+
+Token: "ID: %d, Name: %s\n"
+Type: String Literal
+Line: 14
+Column: 21
+
+Token: ,
+Type: Punctuator
+Line: 14
+Column: 40
+
+Token: s
+Type: Identifier
+Line: 14
+Column: 61
+
+Token: ->
+Type: Operator
+Line: 14
+Column: 62
+
+Token: id
+Type: Identifier
+Line: 14
+Column: 64
+
+Token: ,
+Type: Punctuator
+Line: 14
+Column: 66
+
+Token: s
+Type: Identifier
+Line: 14
+Column: 70
+
+Token: ->
+Type: Operator
+Line: 14
+Column: 71
+
+Token: name
+Type: Identifier
+Line: 14
+Column: 73
+
+Token: )
+Type: Punctuator
+Line: 14
+Column: 77
+
+Token: ;
+Type: Punctuator
+Line: 14
+Column: 82
+
+Token: }
+Type: Punctuator
+Line: 15
+Column: 7
+
+Token: int
+Type: Keyword
+Line: 17
+Column: 8
+
+Token: main
+Type: Identifier
+Line: 17
+Column: 12
+
+Token: (
+Type: Punctuator
+Line: 17
+Column: 16
+
+Token: )
+Type: Punctuator
+Line: 17
+Column: 21
+
+Token: {
+Type: Punctuator
+Line: 17
+Column: 28
+
+Token: int
+Type: Keyword
+Line: 18
+Column: 12
+
+Token: a
+Type: Identifier
+Line: 18
+Column: 16
+
+Token: =
+Type: Operator
+Line: 18
+Column: 18
+
+Token: 10
+Type: Numeric Literal
+Line: 18
+Column: 20
+
+Token: ,
+Type: Punctuator
+Line: 18
+Column: 22
+
+Token: b
+Type: Identifier
+Line: 18
+Column: 26
+
+Token: =
+Type: Operator
+Line: 18
+Column: 28
+
+Token: 20
+Type: Numeric Literal
+Line: 18
+Column: 30
+
+Token: ;
+Type: Punctuator
+Line: 18
+Column: 32
+
+Token: float
+Type: Keyword
+Line: 19
+Column: 8
+
+Token: radius
+Type: Identifier
+Line: 19
+Column: 14
+
+Token: =
+Type: Operator
+Line: 19
+Column: 21
+
+Token: 5.5
+Type: Floating-Point Literal
+Line: 19
+Column: 23
+
+Token: ;
+Type: Punctuator
+Line: 19
+Column: 26
+
+Token: double
+Type: Keyword
+Line: 20
+Column: 9
+
+Token: area
+Type: Identifier
+Line: 20
+Column: 16
+
+Token: =
+Type: Operator
+Line: 20
+Column: 21
+
+Token: PI
+Type: Identifier
+Line: 20
+Column: 23
+
+Token: *
+Type: Operator
+Line: 20
+Column: 26
+
+Token: radius
+Type: Identifier
+Line: 20
+Column: 28
+
+Token: *
+Type: Operator
+Line: 20
+Column: 35
+
+Token: radius
+Type: Identifier
+Line: 20
+Column: 37
+
+Token: ;
+Type: Punctuator
+Line: 20
+Column: 43
+
+Token: char
+Type: Keyword
+Line: 22
+Column: 12
+
+Token: grade
+Type: Identifier
+Line: 22
+Column: 17
+
+Token: =
+Type: Operator
+Line: 22
+Column: 23
+
+Token: 'A'
+Type: Character Literal
+Line: 22
+Column: 25
+
+Token: ;
+Type: Punctuator
+Line: 22
+Column: 27
+
+Token: char
+Type: Keyword
+Line: 23
+Column: 8
+
+Token: *
+Type: Operator
+Line: 23
+Column: 12
+
+Token: msg
+Type: Identifier
+Line: 23
+Column: 14
+
+Token: =
+Type: Operator
+Line: 23
+Column: 18
+
+Token: "Processing student data..."
+Type: String Literal
+Line: 23
+Column: 20
+
+Token: ;
+Type: Punctuator
+Line: 23
+Column: 47
+
+Token: char
+Type: Keyword
+Line: 25
+Column: 33
+
+Token: 89a
+Type: Invalid Identifier
+Line: 25
+Column: 38
+
+Token: =
+Type: Operator
+Line: 25
+Column: 42
+
+Token: 'a'
+Type: Character Literal
+Line: 25
+Column: 44
+
+Token: ;
+Type: Punctuator
+Line: 25
+Column: 46
+
+Token: Student
+Type: Identifier
+Line: 27
+Column: 8
+
+Token: s1
+Type: Identifier
+Line: 27
+Column: 16
+
+Token: =
+Type: Operator
+Line: 27
+Column: 19
+
+Token: {
+Type: Punctuator
+Line: 27
+Column: 21
+
+Token: .
+Type: Operator
+Line: 27
+Column: 24
+
+Token: id
+Type: Identifier
+Line: 27
+Column: 25
+
+Token: =
+Type: Operator
+Line: 27
+Column: 28
+
+Token: 1
+Type: Numeric Literal
+Line: 27
+Column: 30
+
+Token: ,
+Type: Punctuator
+Line: 27
+Column: 31
+
+Token: .
+Type: Operator
+Line: 27
+Column: 34
+
+Token: name
+Type: Identifier
+Line: 27
+Column: 35
+
+Token: =
+Type: Operator
+Line: 27
+Column: 40
+
+Token: "Alice"
+Type: String Literal
+Line: 27
+Column: 42
+
+Token: }
+Type: Punctuator
+Line: 27
+Column: 49
+
+Token: ;
+Type: Punctuator
+Line: 27
+Column: 56
+
+Token: print_student
+Type: Identifier
+Line: 29
+Column: 13
+
+Token: (
+Type: Punctuator
+Line: 29
+Column: 26
+
+Token: &
+Type: Operator
+Line: 29
+Column: 40
+
+Token: s1
+Type: Identifier
+Line: 29
+Column: 41
+
+Token: )
+Type: Punctuator
+Line: 29
+Column: 43
+
+Token: ;
+Type: Punctuator
+Line: 29
+Column: 46
+
+Token: int
+Type: Keyword
+Line: 31
+Column: 9
+
+Token: max_val
+Type: Identifier
+Line: 31
+Column: 13
+
+Token: =
+Type: Operator
+Line: 31
+Column: 21
+
+Token: MAX
+Type: Identifier
+Line: 31
+Column: 23
+
+Token: (
+Type: Punctuator
+Line: 31
+Column: 26
+
+Token: a
+Type: Identifier
+Line: 31
+Column: 30
+
+Token: ,
+Type: Punctuator
+Line: 31
+Column: 31
+
+Token: b
+Type: Identifier
+Line: 31
+Column: 34
+
+Token: )
+Type: Punctuator
+Line: 31
+Column: 35
+
+Token: ;
+Type: Punctuator
+Line: 31
+Column: 37
+
+Token: if
+Type: Keyword
+Line: 33
+Column: 8
+
+Token: (
+Type: Punctuator
+Line: 33
+Column: 11
+
+Token: a
+Type: Identifier
+Line: 33
+Column: 14
+
+Token: <
+Type: Operator
+Line: 33
+Column: 16
+
+Token: b
+Type: Identifier
+Line: 33
+Column: 18
+
+Token: &&
+Type: Operator
+Line: 33
+Column: 20
+
+Token: radius
+Type: Identifier
+Line: 33
+Column: 23
+
+Token: >
+Type: Operator
+Line: 33
+Column: 30
+
+Token: 0.0
+Type: Floating-Point Literal
+Line: 33
+Column: 32
+
+Token: )
+Type: Punctuator
+Line: 33
+Column: 35
+
+Token: {
+Type: Punctuator
+Line: 33
+Column: 40
+
+Token: a
+Type: Identifier
+Line: 34
+Column: 14
+
+Token: +=
+Type: Operator
+Line: 34
+Column: 16
+
+Token: 5
+Type: Numeric Literal
+Line: 34
+Column: 19
+
+Token: ;
+Type: Punctuator
+Line: 34
+Column: 20
+
+Token: }
+Type: Punctuator
+Line: 35
+Column: 7
+
+Token: else
+Type: Keyword
+Line: 35
+Column: 11
+
+Token: {
+Type: Punctuator
+Line: 35
+Column: 16
+
+Token: b
+Type: Identifier
+Line: 36
+Column: 14
+
+Token: -=
+Type: Operator
+Line: 36
+Column: 16
+
+Token: 2
+Type: Numeric Literal
+Line: 36
+Column: 19
+
+Token: ;
+Type: Punctuator
+Line: 36
+Column: 20
+
+Token: }
+Type: Punctuator
+Line: 37
+Column: 7
+
+Token: for
+Type: Keyword
+Line: 39
+Column: 8
+
+Token: (
+Type: Punctuator
+Line: 39
+Column: 12
+
+Token: int
+Type: Keyword
+Line: 39
+Column: 16
+
+Token: i
+Type: Identifier
+Line: 39
+Column: 20
+
+Token: =
+Type: Operator
+Line: 39
+Column: 22
+
+Token: 0
+Type: Numeric Literal
+Line: 39
+Column: 24
+
+Token: ;
+Type: Punctuator
+Line: 39
+Column: 25
+
+Token: i
+Type: Identifier
+Line: 39
+Column: 28
+
+Token: <
+Type: Operator
+Line: 39
+Column: 30
+
+Token: 5
+Type: Numeric Literal
+Line: 39
+Column: 32
+
+Token: ;
+Type: Punctuator
+Line: 39
+Column: 33
+
+Token: i
+Type: Identifier
+Line: 39
+Column: 36
+
+Token: ++
+Type: Operator
+Line: 39
+Column: 37
+
+Token: )
+Type: Punctuator
+Line: 39
+Column: 39
+
+Token: {
+Type: Punctuator
+Line: 39
+Column: 43
+
+Token: area
+Type: Identifier
+Line: 40
+Column: 13
+
+Token: +=
+Type: Operator
+Line: 40
+Column: 18
+
+Token: i
+Type: Identifier
+Line: 40
+Column: 21
+
+Token: ;
+Type: Punctuator
+Line: 40
+Column: 22
+
+Token: }
+Type: Punctuator
+Line: 41
+Column: 7
+
+Token: while
+Type: Keyword
+Line: 43
+Column: 8
+
+Token: (
+Type: Punctuator
+Line: 43
+Column: 14
+
+Token: a
+Type: Identifier
+Line: 43
+Column: 20
+
+Token: >
+Type: Operator
+Line: 43
+Column: 22
+
+Token: 0
+Type: Numeric Literal
+Line: 43
+Column: 24
+
+Token: )
+Type: Punctuator
+Line: 43
+Column: 25
+
+Token: {
+Type: Punctuator
+Line: 43
+Column: 28
+
+Token: a
+Type: Identifier
+Line: 44
+Column: 12
+
+Token: --
+Type: Operator
+Line: 44
+Column: 13
+
+Token: ;
+Type: Punctuator
+Line: 44
+Column: 15
+
+Token: }
+Type: Punctuator
+Line: 45
+Column: 8
+
+Token: do
+Type: Keyword
+Line: 47
+Column: 9
+
+Token: {
+Type: Punctuator
+Line: 47
+Column: 12
+
+Token: b
+Type: Identifier
+Line: 48
+Column: 12
+
+Token: ++
+Type: Operator
+Line: 48
+Column: 13
+
+Token: ;
+Type: Punctuator
+Line: 48
+Column: 15
+
+Token: }
+Type: Punctuator
+Line: 49
+Column: 8
+
+Token: while
+Type: Keyword
+Line: 49
+Column: 13
+
+Token: (
+Type: Punctuator
+Line: 49
+Column: 19
+
+Token: b
+Type: Identifier
+Line: 49
+Column: 25
+
+Token: <
+Type: Operator
+Line: 49
+Column: 27
+
+Token: 25
+Type: Numeric Literal
+Line: 49
+Column: 29
+
+Token: )
+Type: Punctuator
+Line: 49
+Column: 31
+
+Token: ;
+Type: Punctuator
+Line: 49
+Column: 34
+
+Token: switch
+Type: Keyword
+Line: 51
+Column: 9
+
+Token: (
+Type: Punctuator
+Line: 51
+Column: 16
+
+Token: grade
+Type: Identifier
+Line: 51
+Column: 23
+
+Token: )
+Type: Punctuator
+Line: 51
+Column: 28
+
+Token: {
+Type: Punctuator
+Line: 51
+Column: 35
+
+Token: case
+Type: Keyword
+Line: 52
+Column: 16
+
+Token: 'A'
+Type: Character Literal
+Line: 52
+Column: 21
+
+Token: :
+Type: Punctuator
+Line: 52
+Column: 23
+
+Token: printf
+Type: Identifier
+Line: 53
+Column: 16
+
+Token: (
+Type: Punctuator
+Line: 53
+Column: 22
+
+Token: "Excellent\n"
+Type: String Literal
+Line: 53
+Column: 29
+
+Token: )
+Type: Punctuator
+Line: 53
+Column: 41
+
+Token: ;
+Type: Punctuator
+Line: 53
+Column: 54
+
+Token: break
+Type: Keyword
+Line: 54
+Column: 27
+
+Token: ;
+Type: Punctuator
+Line: 54
+Column: 32
+
+Token: case
+Type: Keyword
+Line: 55
+Column: 15
+
+Token: 'B'
+Type: Character Literal
+Line: 55
+Column: 20
+
+Token: :
+Type: Punctuator
+Line: 55
+Column: 22
+
+Token: printf
+Type: Identifier
+Line: 56
+Column: 16
+
+Token: (
+Type: Punctuator
+Line: 56
+Column: 22
+
+Token: "Good\n"
+Type: String Literal
+Line: 56
+Column: 29
+
+Token: )
+Type: Punctuator
+Line: 56
+Column: 36
+
+Token: ;
+Type: Punctuator
+Line: 56
+Column: 44
+
+Token: break
+Type: Keyword
+Line: 57
+Column: 22
+
+Token: ;
+Type: Punctuator
+Line: 57
+Column: 27
+
+Token: default
+Type: Keyword
+Line: 58
+Column: 15
+
+Token: :
+Type: Punctuator
+Line: 58
+Column: 22
+
+Token: printf
+Type: Identifier
+Line: 59
+Column: 21
+
+Token: (
+Type: Punctuator
+Line: 59
+Column: 27
+
+Token: "Needs Improvement\n"
+Type: String Literal
+Line: 59
+Column: 34
+
+Token: )
+Type: Punctuator
+Line: 59
+Column: 54
+
+Token: ;
+Type: Punctuator
+Line: 59
+Column: 75
+
+Token: }
+Type: Punctuator
+Line: 60
+Column: 27
+
+Token: return
+Type: Keyword
+Line: 62
+Column: 28
+
+Token: 0
+Type: Numeric Literal
+Line: 62
+Column: 35
+
+Token: ;
+Type: Punctuator
+Line: 62
+Column: 36
+
+Token: }
+Type: Punctuator
+Line: 63
+Column: 3
+
+Token: #ifdef
+Type: Preprocessor Operator
+Line: 65
+Column: 4
+
+Token: DEBUG
+Type: Identifier
+Line: 65
+Column: 11
+
+Token: printf
+Type: Identifier
+Line: 66
+Column: 10
+
+Token: (
+Type: Punctuator
+Line: 66
+Column: 16
+
+Token: "Debug mode enabled\n"
+Type: String Literal
+Line: 66
+Column: 23
+
+Token: )
+Type: Punctuator
+Line: 66
+Column: 44
+
+Token: ;
+Type: Punctuator
+Line: 66
+Column: 66
+
+Token: #endif
+Type: Preprocessor Operator
+Line: 67
+Column: 24
+
